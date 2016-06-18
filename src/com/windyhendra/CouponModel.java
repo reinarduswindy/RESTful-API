@@ -7,10 +7,13 @@ import java.util.List;
 
 public class CouponModel {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/salestock_test";
+	static final String DB_URL = "jdbc:mysql://127.12.59.2:3306/restapi";
+	static final String username = "admin1mZE6Qq";
+	static final String password = "eEl-WqBYKLEI";
 	
-	static final String username = "root";
-	static final String password = "";
+//	static final String DB_URL = "jdbc:mysql://localhost/salestock_test";
+//	static final String username = "root";
+//	static final String password = "";
 	
 	Connection conn;
 	String sql;

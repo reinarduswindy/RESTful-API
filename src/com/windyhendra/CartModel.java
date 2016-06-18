@@ -6,10 +6,13 @@ import java.util.List;
 
 public class CartModel {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/salestock_test";
+	static final String DB_URL = "jdbc:mysql://127.12.59.2:3306/restapi";
+	static final String username = "admin1mZE6Qq";
+	static final String password = "eEl-WqBYKLEI";
 	
-	static final String username = "root";
-	static final String password = "";
+//	static final String DB_URL = "jdbc:mysql://localhost/salestock_test";
+//	static final String username = "root";
+//	static final String password = "";
 	
 	Connection conn;
 	String sql;
@@ -33,6 +36,18 @@ public class CartModel {
 			Statement st = conn.createStatement();
 			st.executeUpdate(sql);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void removeProduct(String productId) {
+		sql = "DELETE FROM cart_products WHERE product_id='" + productId + "'";
+		
+		try {
+			Statement st = conn.createStatement();
+			st.executeUpdate(sql);
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -100,6 +115,52 @@ public class CartModel {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		TotalPurchase tpur = new TotalPurchase(total);
+		
+		return tpur;
+	}
+	
+	public TotalPurchase getTotalPurchase(String couponCode) {
+		int total = 0;
+		
+		sql = "SELECT * FROM coupons WHERE code='" + couponCode + "'";
+		
+		try {
+			Statement st = conn.createStatement();
+			ResultSet res = st.executeQuery(sql);
+			
+			while(res.next()) {
+				int nominal = res.getInt("nominal");
+				
+				total -= nominal;
+			}
+			
+			sql = "SELECT * FROM cart_products";
+			
+			res = st.executeQuery(sql);
+			
+			List<String> products = new ArrayList<String>();
+			while(res.next()) {
+				String product_id = res.getString("product_id");
+				products.add(product_id);
+			}
+			
+			for(int i=0; i<products.size(); i++) {
+				sql = "SELECT * FROM products WHERE id='" + products.get(i) + "'";
+				ResultSet res2 = st.executeQuery(sql);
+				
+				while(res2.next()) {
+					int price = res2.getInt("price");
+					
+					total += price;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(total < 0) total = 0;
 		
 		TotalPurchase tpur = new TotalPurchase(total);
 		

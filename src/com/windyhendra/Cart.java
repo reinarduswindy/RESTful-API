@@ -77,16 +77,7 @@ public class Cart implements Serializable {
 	}
 	
 	public void removeProduct(String id) {
-		for(int i=0; i<productList.size(); i++) {
-			Product pro = productList.get(i);
-			totalPurchase -= pro.price;
-			if(pro.id == id) {
-				productList.remove(i);
-				
-				System.out.println("Berhasil menghapus produk");
-				return;
-			}
-		}
+		cam.removeProduct(id);
 	}
 	
 	@XmlElement
@@ -99,6 +90,12 @@ public class Cart implements Serializable {
 	@XmlElement
 	public TotalPurchase getTotalPurchase() {
 		TotalPurchase total = cam.getTotalPurchase();
+		return total;
+	}
+	
+	@XmlElement
+	public TotalPurchase getTotalPurchase(String couponId) {
+		TotalPurchase total = cam.getTotalPurchase(couponId);
 		return total;
 	}
 }

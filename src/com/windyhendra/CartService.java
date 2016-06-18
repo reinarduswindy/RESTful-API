@@ -38,12 +38,26 @@ public class CartService {
 	}
 	
 	@GET
-	@Path("/addcoupon/{coupon-id}")
+	@Path("/payment")
 	@Produces("text/xml")
-	public Response addCoupon(@PathParam("coupon-id") String couponCode) {
-		cart.addCoupon(couponCode);
-		return Response.status(200).entity("Berhasil").build();
+	public TotalPurchase payment() {
+		return cart.getTotalPurchase();
 	}
+	
+	@GET
+	@Path("/payment/{coupon-id}")
+	@Produces("text/xml")
+	public TotalPurchase payment(@PathParam("coupon-id") String couponId) {
+		return cart.getTotalPurchase(couponId);
+	}
+	
+//	@GET
+//	@Path("/addcoupon/{coupon-id}")
+//	@Produces("text/xml")
+//	public Response addCoupon(@PathParam("coupon-id") String couponCode) {
+//		cart.addCoupon(couponCode);
+//		return Response.status(200).entity("Berhasil").build();
+//	}
 	
 	@GET
 	@Path("/removeproduct/{product-id}")
@@ -53,11 +67,11 @@ public class CartService {
 		return Response.status(200).entity("Berhasil").build();
 	}
 	
-	@GET
-	@Path("/removecoupon")
-	@Produces("text/xml")
-	public Response removeCoupon() {
-		cart.removeCoupon();
-		return Response.status(200).entity("Berhasil").build();
-	}
+//	@GET
+//	@Path("/removecoupon")
+//	@Produces("text/xml")
+//	public Response removeCoupon() {
+//		cart.removeCoupon();
+//		return Response.status(200).entity("Berhasil").build();
+//	}
 }
